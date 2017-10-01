@@ -16,10 +16,11 @@ func main() {
 func rootRoute(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		fmt.Fprint(w, "Emoji Timezone")
+		fmt.Fprint(w, "Emoji Timezone\n")
 	case "POST":
-		fmt.Fprint(w, "real logic here")
+		fmt.Fprint(w, "real logic here\n")
 	default:
-		fmt.Fprintf(w, "Can't handle %q on route %q!", r.Method, r.URL)
+		msg := fmt.Sprintf("Can't handle %q on route %q!", r.Method, r.URL)
+		http.Error(w, msg, 405)
 	}
 }

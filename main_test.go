@@ -8,11 +8,12 @@ import (
 
 func TestRootRoute(t *testing.T) {
 	cases := []struct {
-		method, want string
+		method, body string
+		status       int
 	}{
-		{"GET", "Emoji Timezone"},
-		{"POST", "real logic here"},
-		{"PUSH", "Can't handle \"PUSH\" on route \"/\"!"},
+		{"GET", "Emoji Timezone\n", 200},
+		{"POST", "real logic here\n", 200},
+		{"PUSH", "Can't handle \"PUSH\" on route \"/\"!\n", 405},
 	}
 	for _, c := range cases {
 		w := httptest.NewRecorder()
@@ -21,10 +22,19 @@ func TestRootRoute(t *testing.T) {
 
 		resp := w.Result()
 		body, _ := ioutil.ReadAll(resp.Body)
-		got := string(body)
+		got := struct {
+			body   string
+			status int
+		}{
+			string(body),
+			resp.StatusCode,
+		}
 
-		if got != c.want {
-			t.Errorf("Request %q to / == %q, want %q", c.method, body, c.want)
+		if got.body != c.body || got.status != c.status {
+			t.Errorf(
+				"Request %q to / == %q (%d), want %q (%d)",
+				c.method, got.body, got.status, c.body, c.status,
+			)
 		}
 	}
 }
