@@ -20,6 +20,6 @@ func rootRoute(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		fmt.Fprint(w, "real logic here")
 	default:
-		fmt.Fprint(w, "some error message")
+		fmt.Fprintf(w, "Can't handle %q on route %q!", r.Method, r.URL)
 	}
 }

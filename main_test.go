@@ -12,7 +12,7 @@ func TestRootRoute(t *testing.T) {
 	}{
 		{"GET", "Emoji Timezone"},
 		{"POST", "real logic here"},
-		{"PUSH", "some error message"},
+		{"PUSH", "Can't handle \"PUSH\" on route \"/\"!"},
 	}
 	for _, c := range cases {
 		w := httptest.NewRecorder()
