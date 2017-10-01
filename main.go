@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 
+// HTTP Server
 func main() {
-
 	http.HandleFunc("/", rootRoute)
-
 	log.Fatal(http.ListenAndServe("localhost:8080", nil))
 }
 
+// HTTP Routing for /
 func rootRoute(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
@@ -25,6 +25,7 @@ func rootRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// App logic to handle Slack requests
 func emojiTimezone(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "real logic here\n")
 }
