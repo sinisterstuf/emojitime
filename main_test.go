@@ -12,7 +12,7 @@ func TestRootRoute(t *testing.T) {
 		status       int
 	}{
 		{"GET", "Emoji Timezone\n", 200},
-		{"POST", "real logic here\n", 200},
+		{"POST", "srz can't handle that Slack command\n", 400},
 		{"PUSH", "Can't handle \"PUSH\" on route \"/\"!\n", 405},
 	}
 	for _, c := range cases {

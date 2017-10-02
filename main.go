@@ -27,5 +27,11 @@ func rootRoute(w http.ResponseWriter, r *http.Request) {
 
 // App logic to handle Slack requests
 func emojiTimezone(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "real logic here\n")
+	if r.PostFormValue("command") != "/time" {
+		msg := fmt.Sprint("srz can't handle that Slack command")
+		http.Error(w, msg, 400)
+		return
+	}
+
+	fmt.Fprint(w, "done\n")
 }
