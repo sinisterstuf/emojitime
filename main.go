@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 )
 
 // HTTP Server
@@ -33,5 +34,37 @@ func emojiTimezone(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// extract time from text
+	text := r.PostFormValue("text")
+	t, err := time.Parse("15:04", text)
+	if err != nil {
+		// TODO: improve this error message
+		log.Println("Failed to parse %q as time: %q", text, err.Error())
+		http.Error(w, fmt.Sprintf("invalid time: %q", t), 400)
+		return
+	}
+
+	clock := Emojify(t)
+	fmt.Println(clock)
+
 	fmt.Fprint(w, "done\n")
+}
+
+// Converts time into the relevant clock emoji rounded to nearest half hour
+func Emojify(t time.Time) string {
+	switch {
+	case 0 <= t.Minute() && t.Minute() < 15:
+		log.Println("rounding down to hour")
+		return ":clock12:"
+	case 15 <= t.Minute() && t.Minute() < 45:
+		log.Println("rounding to half hour")
+		return ":clock1230:"
+	case 45 <= t.Minute():
+		log.Println("rounding up to hour")
+		return ":clock1:"
+	default:
+		log.Println("wtf")
+		return ":question:"
+	}
+
 }
