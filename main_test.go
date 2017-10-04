@@ -44,6 +44,7 @@ func TestEmojify(t *testing.T) {
 	cases := []struct {
 		in, want string
 	}{
+		{"00:00", ":clock12:"},
 		{"12:00", ":clock12:"},
 		{"12:05", ":clock12:"},
 		{"12:14", ":clock12:"},
@@ -53,6 +54,7 @@ func TestEmojify(t *testing.T) {
 		{"12:55", ":clock1:"},
 		{"12:45", ":clock1:"},
 		{"12:59", ":clock1:"},
+		{"13:00", ":clock1:"},
 	}
 
 	for _, c := range cases {

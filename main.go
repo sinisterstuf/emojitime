@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -50,21 +51,41 @@ func emojiTimezone(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "done\n")
 }
 
-// Converts time into the relevant clock emoji rounded to nearest half hour
+// Emojify converts a time value into the "clock emoji" it represents.  Because
+// there is only a clock emoji for every half an hour, the time is rounded to
+// the nearest half hour.
 func Emojify(t time.Time) string {
+	h := t.Hour()
+	m := t.Minute()
+
+	// round minutes
 	switch {
-	case 0 <= t.Minute() && t.Minute() < 15:
-		log.Println("rounding down to hour")
-		return ":clock12:"
-	case 15 <= t.Minute() && t.Minute() < 45:
-		log.Println("rounding to half hour")
-		return ":clock1230:"
-	case 45 <= t.Minute():
-		log.Println("rounding up to hour")
-		return ":clock1:"
+	case 0 <= m && m < 15:
+		m = 0 // round down to hour
+	case 15 <= m && m < 45:
+		m = 30 // round up to half hour
+	case 45 <= m:
+		h++   // bump up hour
+		m = 0 // round to hour
 	default:
-		log.Println("wtf")
+		// TODO: consider returning error instead
 		return ":question:"
 	}
 
+	// normalise hours (there are no 24-hour emoji clocks)
+	if h > 12 {
+		h = h - 12
+	}
+	if h == 0 {
+		h = 12
+	}
+
+	hs := strconv.Itoa(h)
+	ms := ""
+	if m != 0 {
+		ms = strconv.Itoa(m)
+	}
+
+	clock := ":clock" + hs + ms + ":"
+	return clock
 }
