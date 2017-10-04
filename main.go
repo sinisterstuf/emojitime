@@ -55,21 +55,16 @@ func emojiTimezone(w http.ResponseWriter, r *http.Request) {
 // there is only a clock emoji for every half an hour, the time is rounded to
 // the nearest half hour.
 func Emojify(t time.Time) string {
+	var hs, ms string
 	h := t.Hour()
 	m := t.Minute()
 
 	// round minutes
 	switch {
-	case 0 <= m && m < 15:
-		m = 0 // round down to hour
 	case 15 <= m && m < 45:
-		m = 30 // round up to half hour
+		ms = "30" // round up to half hour
 	case 45 <= m:
-		h++   // bump up hour
-		m = 0 // round to hour
-	default:
-		// TODO: consider returning error instead
-		return ":question:"
+		h++ // bump up hour
 	}
 
 	// normalise hours (there are no 24-hour emoji clocks)
@@ -79,13 +74,7 @@ func Emojify(t time.Time) string {
 	if h == 0 {
 		h = 12
 	}
+	hs = strconv.Itoa(h)
 
-	hs := strconv.Itoa(h)
-	ms := ""
-	if m != 0 {
-		ms = strconv.Itoa(m)
-	}
-
-	clock := ":clock" + hs + ms + ":"
-	return clock
+	return ":clock" + hs + ms + ":"
 }
