@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func TestEmojify(t *testing.T) {
+func TestClockify(t *testing.T) {
 	cases := []struct {
 		in, want string
 	}{
@@ -24,9 +24,18 @@ func TestEmojify(t *testing.T) {
 
 	for _, c := range cases {
 		ti, _ := time.Parse("15:04", c.in)
-		got := Emojify(ti)
+		got := Clockify(ti)
 		if got != c.want {
-			t.Errorf("Emojify(%q) == %q, want %q", c.in, got, c.want)
+			t.Errorf("Clockify(%q) == %q, want %q", c.in, got, c.want)
 		}
+	}
+}
+
+func TestFlagify(t *testing.T) {
+	in := "hu"
+	got := Flagify(in)
+	want := ":flag-hu:"
+	if got != want {
+		t.Errorf("Flagify(%q) == %q, want %q", in, got, want)
 	}
 }

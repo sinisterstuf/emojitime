@@ -46,7 +46,7 @@ func emojiTimezone(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	clock := emoji.Emojify(t)
+	clock := emoji.Clockify(t)
 	fmt.Println(clock)
 
 	fmt.Fprint(w, "done\n")
