@@ -1,3 +1,5 @@
+// The emojitime server generates emoji clock and flag combinations for times in
+// different time zones.
 package main
 
 import (

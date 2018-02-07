@@ -1,3 +1,5 @@
+// Package emoji provides functions for converting various types into their
+// emoji representations.
 package emoji
 
 import (
